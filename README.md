@@ -177,7 +177,7 @@ google_container_cluster.primary: Creation complete after 3m24s (ID: gke-demo-cl
 Apply complete! Resources: 14 added, 0 changed, 0 destroyed.
 ```
 
-You can also confirm the cluster was created successfully by logging into the cloud console and ensuring that Network Policies are enabled for the new cluster.
+You can also confirm the cluster was created successfully by logging into the cloud console and ensuring that Legacy Authorization is disabled for the new cluster.
 
 ![Cluster settings in console](./img/cluster_in_console.png)
 
