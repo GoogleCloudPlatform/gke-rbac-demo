@@ -17,8 +17,9 @@
 """
 This is script uses the kubernetes client to access the Kubernetes API.
 
-The script periodically requests a list of all pods in the default workspace. It then
-iterates over each pod and applies an "updated" label with the current timestamp.
+The script periodically requests a list of all pods in the default workspace.
+It then iterates over each pod and applies an "updated" label with the current
+timestamp.
 """
 
 import time
@@ -27,12 +28,12 @@ from kubernetes import client, config
 
 def run_labeler():
     """
-    Runs an infinite loop that periodically applies an "updated=timestamp" label to pods
-    in the default namespace
+    Runs an infinite loop that periodically applies an "updated=timestamp"
+    label to pods in the default namespace
     """
 
-    # Load the in-cluster configuration so we are subject to RBAC rules configured for this
-    # service account.
+    # Load the in-cluster configuration so we are subject to RBAC rules
+    # configured for this service account.
     config.load_incluster_config()
 
     v1 = client.CoreV1Api()
@@ -53,10 +54,11 @@ def run_labeler():
 
             # Update the pod by "patching" the partial resource definition
             v1.patch_namespaced_pod(name=i.metadata.name,
-                                                   namespace="default", body=body)
+                                    namespace="default", body=body)
 
         # Wait before polling the API again
         time.sleep(20)
+
 
 if __name__ == "__main__":
     run_labeler()
