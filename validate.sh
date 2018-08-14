@@ -30,20 +30,20 @@ OUTPUT=$SUCCESS
 #a) confirming that the "owner" can create/view all resources - X
 #b) confirming that the "auditor" cannot list all pods, but CAN list pods in the dev namespace - X
 #c) confirming that the "auditor" cannot create or delete pods - X
-#d) deploying the pod-labeler application and confirming the labels appear on the pods -
+#d) deploying the pod-labeler application and confirming the labels appear on the pods - 
 #e) Makefile needs validate target
 
 owner() {
   local command=$1; shift;
-  gcloud compute ssh gke-tutorial-owner --command "${command}" 2>&1
+  echo "$(gcloud compute ssh gke-tutorial-owner --command "${command}" 2>&1)"
 }
 admin() {
   local command=$1; shift;
-  gcloud compute ssh gke-tutorial-admin --command "${command}" 2>&1
+  echo "$(gcloud compute ssh gke-tutorial-admin --command "${command}" 2>&1)"
 }
 auditor() {
   local command=$1; shift;
-  gcloud compute ssh gke-tutorial-auditor --command "${command}" 2>&1
+  echo "$(gcloud compute ssh gke-tutorial-auditor --command "${command}" 2>&1)"
 }
 
 
@@ -73,4 +73,4 @@ echo "step 8 of the validation passed."
 
 OUTPUT=$UPDATED
 admin "kubectl get pods --show-labels" | grep "$OUTPUT" &> /dev/null || exit 1
-echo "step 9 of the validation passed."
+echo "step 9 of the validation passed." 
