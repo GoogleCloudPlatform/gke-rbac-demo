@@ -18,17 +18,20 @@ set -euo pipefail
 
 owner_exec() {
   local command=$1; shift;
-  gcloud compute ssh gke-tutorial-owner --command "${command}"
+  # shellcheck disable=SC2005
+  echo "$(gcloud compute ssh gke-tutorial-owner --command "${command}")"
 }
 
 auditor_exec() {
   local command=$1; shift;
-  gcloud compute ssh gke-tutorial-auditor --command "${command}"
+  # shellcheck disable=SC2005
+  echo "$(gcloud compute ssh gke-tutorial-auditor --command "${command}")"
 }
 
 admin_exec() {
   local command=$1; shift;
-  gcloud compute ssh gke-tutorial-admin --command "${command}"
+  # shellcheck disable=SC2005
+  echo "$(gcloud compute ssh gke-tutorial-admin --command "${command}")"
 }
 
 owner_exec "source /etc/profile && exit"
