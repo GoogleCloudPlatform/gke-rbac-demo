@@ -2,7 +2,7 @@
 
 ## Table of Contents
 
-<!-- TOC -->
+<!-- TOC Start -->
 
 * [Introduction](#introduction)
 * [Architecture](#architecture)
@@ -39,7 +39,7 @@
   * [Invalid fingerprint error during terraform apply](#invalid-fingerprint-error-during-terraform-apply)
 * [Relevant Material](#relevant-material)
 
-<!-- TOC -->
+<!-- TOC End -->
 
 ## Introduction
 
