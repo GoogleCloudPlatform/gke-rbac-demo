@@ -97,6 +97,30 @@ resource "google_compute_instance" "instance" {
     email  = "${var.service_account_email}"
     scopes = ["userinfo-email", "compute-ro", "storage-ro", "cloud-platform"]
   }
+  
+  // local-exec providers may run before the host has fully initialized. However, they
+  // are run sequentially in the order they were defined.
+  //
+  // This provider is used to block the subsequent providers until the instance
+  // is available.
+  provisioner "local-exec" {
+    command = <<EOF
+        READY=""
+        for i in $(seq 1 18); do
+          if gcloud compute ssh ${var.hostname} --command uptime; then
+            READY="yes"
+            break;
+          fi
+          echo "Waiting for ${var.hostname} to initialize..."
+          sleep 10;
+        done
+        if [[ -z $READY ]]; then
+          echo "${var.hostname} failed to start in time."
+          echo "Please verify that the instance starts and then re-run `terraform apply`"
+          exit 1
+        fi
+EOF
+  }
 
   provisioner "local-exec" {
     command = "echo \"${data.template_file.rbac_yaml.rendered}\" > '${path.module}/manifests/rbac.yaml'"
