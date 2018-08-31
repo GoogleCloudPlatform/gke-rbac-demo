@@ -14,20 +14,24 @@
 # limitations under the License.
 
 # bash "strict-mode", fail immediately if there is a problem
+
 set -euo pipefail
 
-source common.sh
+owner() {
+  local command=$1; shift;
+  # shellcheck disable=SC2005
+  echo "$(gcloud compute ssh gke-tutorial-owner --command "${command}" 2>&1)"
+}
 
-owner "source /etc/profile && exit"
-auditor "source /etc/profile && exit"
-admin "source /etc/profile && exit"
-admin "kubectl apply -f ./manifests/rbac.yaml"
+admin() {
+  local command=$1; shift;
+  # shellcheck disable=SC2005
+  echo "$(gcloud compute ssh gke-tutorial-admin --command "${command}" 2>&1)"
+}
 
-owner "kubectl apply -n dev -f ./manifests/hello-server.yaml"
-owner "kubectl apply -n prod -f ./manifests/hello-server.yaml"
-owner "kubectl apply -n test -f ./manifests/hello-server.yaml"
+auditor() {
+  local command=$1; shift;
+  # shellcheck disable=SC2005
+  echo "$(gcloud compute ssh gke-tutorial-auditor --command "${command}" 2>&1)"
+}
 
-admin "kubectl apply -f manifests/pod-labeler.yaml"
-admin "kubectl apply -f manifests/pod-labeler-fix-2.yaml"
-sleep 15
-exit 0
