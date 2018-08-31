@@ -18,8 +18,8 @@
 This is script uses the kubernetes client to access the Kubernetes API.
 
 The script periodically requests a list of all pods in the default workspace.
-It then iterates over each pod and applies an "updated" label with the current
-timestamp.
+It then iterates over each pod and applies an "updated" label with the
+current timestamp.
 """
 
 import time

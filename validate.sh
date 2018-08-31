@@ -21,22 +21,7 @@ FAILURE="Error from server (Forbidden)"
 UPDATED="updated="
 OUTPUT=$SUCCESS
 
-owner() {
-  local command=$1; shift;
-  # shellcheck disable=SC2005
-  echo "$(gcloud compute ssh gke-tutorial-owner --command "${command}" 2>&1)"
-}
-admin() {
-  local command=$1; shift;
-  # shellcheck disable=SC2005
-  echo "$(gcloud compute ssh gke-tutorial-admin --command "${command}" 2>&1)"
-}
-auditor() {
-  local command=$1; shift;
-  # shellcheck disable=SC2005
-  echo "$(gcloud compute ssh gke-tutorial-auditor --command "${command}" 2>&1)"
-}
-
+source common.sh
 
 # OWNER
 owner "kubectl get pods -n dev" | grep "$OUTPUT" &> /dev/null || exit 1
