@@ -29,5 +29,6 @@ owner "kubectl apply -n test -f ./manifests/hello-server.yaml"
 
 admin "kubectl apply -f manifests/pod-labeler.yaml"
 admin "kubectl apply -f manifests/pod-labeler-fix-2.yaml"
+
 sleep 15
 exit 0

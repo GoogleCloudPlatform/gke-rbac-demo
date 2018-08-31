@@ -21,7 +21,7 @@ FAILURE="Error from server (Forbidden)"
 UPDATED="updated="
 OUTPUT=$SUCCESS
 
-source ./common.sh
+source common.sh
 
 # OWNER
 owner "kubectl get pods -n dev" | grep "$OUTPUT" &> /dev/null || exit 1
