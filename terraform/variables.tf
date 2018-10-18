@@ -80,12 +80,6 @@ variable "master_cidr_block" {
   default     = "10.0.90.0/28"
 }
 
-variable "min_master_version" {
-  description = "The minimum version to use for cluster masters"
-  type        = "string"
-  default     = "1.10.4"
-}
-
 variable "node_machine_type" {
   description = "The instance to use for your bastion instance"
   type        = "string"
