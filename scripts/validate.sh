@@ -14,14 +14,17 @@
 # limitations under the License.
 
 # bash "strict-mode", fail immediately if there is a problem
-set -euo pipefail
+set -o nounset
+set -o pipefail
 
 SUCCESS="hello-server-"
 FAILURE="Error from server (Forbidden)"
 UPDATED="updated="
 OUTPUT=$SUCCESS
 
-source common.sh
+source "./scripts/common.sh"
+
+source "./scripts/setup_manifests.sh"
 
 # OWNER
 owner "kubectl get pods -n dev" | grep "$OUTPUT" &> /dev/null || exit 1
