@@ -20,36 +20,37 @@ set -o pipefail
 SUCCESS="hello-server-"
 FAILURE="Error from server (Forbidden)"
 UPDATED="updated="
-OUTPUT=$SUCCESS
 
 source "./scripts/common.sh"
 
 source "./scripts/setup_manifests.sh"
 
-# OWNER
-owner "kubectl get pods -n dev" | grep "$OUTPUT" &> /dev/null || exit 1
-echo "step 1 of the validation passed."
-owner "kubectl get pods -n test" | grep "$OUTPUT" &> /dev/null || exit 1
-echo "step 2 of the validation passed."
-owner "kubectl get pods -n prod" | grep "$OUTPUT" &> /dev/null || exit 1
-echo "step 3 of the validation passed."
+# OWNER Tests
+echo "--- Owner Tests ---"
+owner "kubectl get pods -n dev" | grep "$SUCCESS" &> /dev/null || exit 1
+echo "Step 1 of the validation passed."
+owner "kubectl get pods -n test" | grep "$SUCCESS" &> /dev/null || exit 1
+echo "Step 2 of the validation passed."
+owner "kubectl get pods -n prod" | grep "$SUCCESS" &> /dev/null || exit 1
+echo "Step 3 of the validation passed."
 
-# AUDITOR
-auditor "kubectl get pods -n dev" | grep "$OUTPUT" &> /dev/null || exit 1
-echo "step 4 of the validation passed."
-
-OUTPUT=$FAILURE
-auditor "kubectl get pods -n test" | grep "$OUTPUT" &> /dev/null || exit 1
-echo "step 5 of the validation passed."
-auditor "kubectl get pods -n prod" | grep "$OUTPUT" &> /dev/null || exit 1
-echo "step 6 of the validation passed."
-
-auditor "kubectl run shell -i --tty --image alpine:3.7 -- sh" | grep "$OUTPUT" &> \
+# AUDITOR Tests
+echo "--- Auditor Tests ---"
+auditor "kubectl get pods -l app=hello-server --all-namespaces" | grep "$FAILURE" &> /dev/null || exit 1
+echo "Step 4 of the validation passed."
+auditor "kubectl get pods -l app=hello-server --namespace=dev" | grep "$SUCCESS" &> /dev/null || exit 1
+echo "Step 5 of the validation passed."
+auditor "kubectl get pods -n test" | grep "$FAILURE" &> /dev/null || exit 1
+echo "Step 6 of the validation passed."
+auditor "kubectl get pods -n prod" | grep "$FAILURE" &> /dev/null || exit 1
+echo "Step 7 of the validation passed."
+auditor "kubectl run shell -i --tty --image alpine:3.7 -- sh" | grep "$FAILURE" &> \
 /dev/null || exit 1
-echo "step 7 of the validation passed."
-auditor "kubectl delete pod foo-x123" | grep "$OUTPUT" &> /dev/null || exit 1
-echo "step 8 of the validation passed."
+echo "Step 8 of the validation passed."
+auditor "kubectl delete pod foo-x123" | grep "$FAILURE" &> /dev/null || exit 1
+echo "Step 9 of the validation passed."
 
-OUTPUT=$UPDATED
-admin "kubectl get pods --show-labels" | grep "$OUTPUT" &> /dev/null || exit 1
-echo "step 9 of the validation passed."
+# ADMIN Tests
+echo "--- Admin Tests ---"
+admin "kubectl get pods --show-labels" | grep "$UPDATED" &> /dev/null || exit 1
+echo "Step 10 of the validation passed."
