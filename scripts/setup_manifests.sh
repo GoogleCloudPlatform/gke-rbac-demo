@@ -19,13 +19,13 @@ set -euo pipefail
 owner "source /etc/profile && exit"
 auditor "source /etc/profile && exit"
 admin "source /etc/profile && exit"
-admin "kubectl apply -f ./manifests/rbac.yaml"
+admin "kubectl apply -n default -f ./manifests/rbac.yaml"
 
 owner "kubectl apply -n dev -f ./manifests/hello-server.yaml"
 owner "kubectl apply -n prod -f ./manifests/hello-server.yaml"
 owner "kubectl apply -n test -f ./manifests/hello-server.yaml"
 
-admin "kubectl apply -f manifests/pod-labeler.yaml"
+admin "kubectl apply -n default -f manifests/pod-labeler.yaml"
 admin "kubectl apply -f manifests/pod-labeler-fix-2.yaml"
 
 sleep 15
