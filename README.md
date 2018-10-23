@@ -219,7 +219,7 @@ Input:
 
 ```console
 # SSH to the admin
-gcloud compute ssh gke-tutorial-admin
+gcloud compute ssh gke-tutorial-admin-rbac
 ```
 
 Create the namespaces, roles, and bindings
@@ -365,7 +365,7 @@ Deploy the pod-labeler application. This will also deploy a Role, ServiceAccount
 
 ```console
 # SSH to the admin instance
-gcloud compute ssh gke-tutorial-admin
+gcloud compute ssh gke-tutorial-admin-rbac
 
 # Apply the pod-labeler configuration
 kubectl apply -f manifests/pod-labeler.yaml
