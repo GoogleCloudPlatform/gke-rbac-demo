@@ -39,6 +39,11 @@ variable "project" {
   type        = "string"
 }
 
+variable "execution_id" {
+  description = "The random number for each execution"
+  type        = "string"
+}
+
 /*
 Optional Variables
 Defaults will be used for these, if not overridden at runtime.

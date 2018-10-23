@@ -34,6 +34,11 @@ variable "zone" {
   type        = "string"
 }
 
+variable "execution_id" {
+  description = "The random number for each execution"
+  type        = "string"
+}
+
 variable "tags" {
   description = "the instance tags"
   type        = "list"

@@ -41,3 +41,8 @@ variable "vpc_name" {
   type    = "string"
   default = "kube-net"
 }
+
+variable "execution_id" {
+  description = "The random number for each execution"
+  type        = "string"
+}

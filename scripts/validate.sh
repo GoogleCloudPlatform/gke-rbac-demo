@@ -13,7 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# This script will run some basic validation tests of the environment that is
+# built via the Terraform configuration.  The script will test using three
+# specific user roles (Owner, Auditor, and Admin) to verify specific permissions.
+
 # bash "strict-mode", fail immediately if there is a problem
+
 set -o nounset
 set -o pipefail
 

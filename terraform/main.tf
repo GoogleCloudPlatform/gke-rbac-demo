@@ -28,8 +28,9 @@ module "network" {
   source   = "./modules/network"
   project  = "${var.project}"
   region   = "${var.region}"
-  vpc_name = "kube-net"
+  vpc_name = "kube-net-rbac-${var.execution_id}"
   tags     = "${var.bastion_tags}"
+  execution_id = "${var.execution_id}"
 }
 
 module "firewall" {
@@ -37,6 +38,7 @@ module "firewall" {
   project  = "${var.project}"
   vpc      = "${module.network.network_self_link}"
   net_tags = "${var.bastion_tags}"
+  execution_id = "${var.execution_id}"
 }
 
 module "bastion" {
@@ -47,11 +49,12 @@ module "bastion" {
   zone                  = "${var.zone}"
   tags                  = "${var.bastion_tags}"
   cluster_subnet        = "${module.network.subnet_self_link}"
-  cluster_name          = "${var.cluster_name}"
+  cluster_name          = "${var.cluster_name}-${var.execution_id}"
   owner_email           = "${google_service_account.owner.email}"
   auditor_email         = "${google_service_account.auditor.email}"
   service_account_email = "${google_service_account.admin.email}"
   grant_cluster_admin   = "1"
+  execution_id = "${var.execution_id}"
 }
 
 module "owner_instance" {
@@ -62,7 +65,7 @@ module "owner_instance" {
   zone                  = "${var.zone}"
   tags                  = "${var.bastion_tags}"
   cluster_subnet        = "${module.network.subnet_self_link}"
-  cluster_name          = "${var.cluster_name}"
+  cluster_name          = "${var.cluster_name}-${var.execution_id}"
   owner_email           = "${google_service_account.owner.email}"
   auditor_email         = "${google_service_account.auditor.email}"
   service_account_email = "${google_service_account.owner.email}"
@@ -76,7 +79,7 @@ module "auditor_instance" {
   zone                  = "${var.zone}"
   tags                  = "${var.bastion_tags}"
   cluster_subnet        = "${module.network.subnet_self_link}"
-  cluster_name          = "${var.cluster_name}"
+  cluster_name          = "${var.cluster_name}-${var.execution_id}"
   owner_email           = "${google_service_account.owner.email}"
   auditor_email         = "${google_service_account.auditor.email}"
   service_account_email = "${google_service_account.auditor.email}"

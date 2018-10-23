@@ -28,3 +28,8 @@ variable "net_tags" {
   description = "tags for the firewall"
   type        = "list"
 }
+
+variable "execution_id" {
+  description = "The random number for each execution"
+  type        = "string"
+}
