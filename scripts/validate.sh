@@ -38,19 +38,17 @@ echo "Step 3 of the validation passed."
 echo "--- Auditor Tests ---"
 auditor "kubectl get pods -l app=hello-server --all-namespaces" | grep "$FAILURE" &> /dev/null || exit 1
 echo "Step 4 of the validation passed."
-auditor "kubectl get pods -l app=hello-server --namespace=dev" | grep "$SUCCESS" &> /dev/null || exit 1
-echo "Step 5 of the validation passed."
 auditor "kubectl get pods -n test" | grep "$FAILURE" &> /dev/null || exit 1
-echo "Step 6 of the validation passed."
+echo "Step 5 of the validation passed."
 auditor "kubectl get pods -n prod" | grep "$FAILURE" &> /dev/null || exit 1
-echo "Step 7 of the validation passed."
+echo "Step 6 of the validation passed."
 auditor "kubectl run shell -i --tty --image alpine:3.7 -- sh" | grep "$FAILURE" &> \
 /dev/null || exit 1
-echo "Step 8 of the validation passed."
+echo "Step 7 of the validation passed."
 auditor "kubectl delete pod foo-x123" | grep "$FAILURE" &> /dev/null || exit 1
-echo "Step 9 of the validation passed."
+echo "Step 8 of the validation passed."
 
 # ADMIN Tests
 echo "--- Admin Tests ---"
 admin "kubectl get pods --show-labels" | grep "$UPDATED" &> /dev/null || exit 1
-echo "Step 10 of the validation passed."
+echo "Step 9 of the validation passed."
