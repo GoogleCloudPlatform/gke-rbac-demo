@@ -28,7 +28,7 @@ module "network" {
   source   = "./modules/network"
   project  = "${var.project}"
   region   = "${var.region}"
-  vpc_name = "kube-net-rbac-${var.execution_id}"
+  vpc_name = "${var.vpc_name}-${var.execution_id}"
   tags     = "${var.bastion_tags}"
   execution_id = "${var.execution_id}"
 }
@@ -44,7 +44,7 @@ module "firewall" {
 module "bastion" {
   source                = "./modules/instance"
   project               = "${var.project}"
-  hostname              = "gke-tutorial-admin"
+  hostname              = "gke-tutorial-admin-rbac"
   machine_type          = "${var.bastion_machine_type}"
   zone                  = "${var.zone}"
   tags                  = "${var.bastion_tags}"
@@ -54,13 +54,14 @@ module "bastion" {
   auditor_email         = "${google_service_account.auditor.email}"
   service_account_email = "${google_service_account.admin.email}"
   grant_cluster_admin   = "1"
-  execution_id = "${var.execution_id}"
+  vpc_name              = "${var.vpc_name}-${var.execution_id}"
+  execution_id          = "${var.execution_id}"
 }
 
 module "owner_instance" {
   source                = "./modules/instance"
   project               = "${var.project}"
-  hostname              = "gke-tutorial-owner"
+  hostname              = "gke-tutorial-owner-rbac"
   machine_type          = "${var.bastion_machine_type}"
   zone                  = "${var.zone}"
   tags                  = "${var.bastion_tags}"
@@ -69,13 +70,14 @@ module "owner_instance" {
   owner_email           = "${google_service_account.owner.email}"
   auditor_email         = "${google_service_account.auditor.email}"
   service_account_email = "${google_service_account.owner.email}"
-  execution_id = "${var.execution_id}"
+  vpc_name              = "${var.vpc_name}-${var.execution_id}"
+  execution_id          = "${var.execution_id}"
 }
 
 module "auditor_instance" {
   source                = "./modules/instance"
   project               = "${var.project}"
-  hostname              = "gke-tutorial-auditor"
+  hostname              = "gke-tutorial-auditor-rbac"
   machine_type          = "${var.bastion_machine_type}"
   zone                  = "${var.zone}"
   tags                  = "${var.bastion_tags}"
@@ -84,7 +86,8 @@ module "auditor_instance" {
   owner_email           = "${google_service_account.owner.email}"
   auditor_email         = "${google_service_account.auditor.email}"
   service_account_email = "${google_service_account.auditor.email}"
-  execution_id = "${var.execution_id}"
+  vpc_name              = "${var.vpc_name}-${var.execution_id}"
+  execution_id          = "${var.execution_id}"
 }
 
 resource "google_container_cluster" "primary" {

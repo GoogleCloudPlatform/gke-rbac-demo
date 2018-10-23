@@ -44,6 +44,12 @@ variable "execution_id" {
   type        = "string"
 }
 
+variable "vpc_name" {
+  description = "The name used for vps, network and subnetwork"
+  type        = "string"
+  default     = "kube-net-rbac"
+}
+
 /*
 Optional Variables
 Defaults will be used for these, if not overridden at runtime.
@@ -64,7 +70,7 @@ variable "bastion_tags" {
 variable "cluster_name" {
   description = "The name to give the new Kubernetes cluster."
   type        = "string"
-  default     = "gke-demo-cluster"
+  default     = "gke-demo-cluster-rbac"
 }
 
 variable "initial_node_count" {
