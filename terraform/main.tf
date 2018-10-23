@@ -69,6 +69,7 @@ module "owner_instance" {
   owner_email           = "${google_service_account.owner.email}"
   auditor_email         = "${google_service_account.auditor.email}"
   service_account_email = "${google_service_account.owner.email}"
+  execution_id = "${var.execution_id}"
 }
 
 module "auditor_instance" {
@@ -83,6 +84,7 @@ module "auditor_instance" {
   owner_email           = "${google_service_account.owner.email}"
   auditor_email         = "${google_service_account.auditor.email}"
   service_account_email = "${google_service_account.auditor.email}"
+  execution_id = "${var.execution_id}"
 }
 
 resource "google_container_cluster" "primary" {
