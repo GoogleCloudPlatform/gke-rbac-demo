@@ -19,6 +19,7 @@ set -o pipefail
 
 SUCCESS="hello-server-"
 FAILURE="Error from server (Forbidden)"
+PODLABELER="pod-labeler-"
 UPDATED="updated="
 
 source "./scripts/common.sh"
@@ -50,5 +51,5 @@ echo "Step 8 of the validation passed."
 
 # ADMIN Tests
 echo "--- Admin Tests ---"
-admin "kubectl get pods --show-labels" | grep "$UPDATED" &> /dev/null || exit 1
+admin "kubectl get pods -l app=pod-labeler" | grep "$PODLABELER" &> /dev/null || exit 1
 echo "Step 9 of the validation passed."
