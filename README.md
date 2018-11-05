@@ -133,23 +133,7 @@ In addition, the terraform configuration takes three parameters to determine whe
 * `region`
 * `zone`
 
-For simplicity, these parameters are to be specified in a file named `terraform.tfvars`, in the `terraform` directory. To ensure the appropriate APIs are enabled and to generate the `terraform/terraform.tfvars` file based on your gcloud defaults, run:
-
-```console
-make setup-project
-```
-
-This will enable the necessary Service APIs, and it will also generate a `terraform/terraform.tfvars` file with the following keys. The values themselves will match the output of `gcloud config list`:
-
-```console
-$ cat terraform/terraform.tfvars
-
-project="YOUR_PROJECT"
-region="YOUR_REGION"
-zone="YOUR_ZONE"
-```
-
-If you need to override any of the defaults, simply replace the desired value(s) to the right of the equals sign(s). Be sure your replacement values are still double-quoted.
+These parameters will be configured based on your gcloud default settings from the prior step.
 
 ### Provisioning the Kubernetes Engine Cluster
 
@@ -157,7 +141,7 @@ Next, apply the terraform configuration with:
 
 ```console
 # From within the project root, use make to apply the terraform
-make tf-apply
+make create
 ```
 
 When prompted if you want to deploy the plan, review the generated plan and enter `yes` to deploy the environment.
