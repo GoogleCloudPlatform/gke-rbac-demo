@@ -20,7 +20,6 @@ set -o pipefail
 SUCCESS="hello-server-"
 FAILURE="Error from server (Forbidden)"
 PODLABELER="pod-labeler-"
-UPDATED="updated="
 
 source "./scripts/common.sh"
 
