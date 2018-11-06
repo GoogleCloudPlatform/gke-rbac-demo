@@ -34,4 +34,3 @@ auditor() {
   # shellcheck disable=SC2005
   echo "$(gcloud compute ssh gke-tutorial-auditor --command "${command}" 2>&1)"
 }
-
