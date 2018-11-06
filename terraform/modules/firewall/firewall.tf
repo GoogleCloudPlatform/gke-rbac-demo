@@ -18,7 +18,7 @@ limitations under the License.
 // Need a firewall rule so that the bastion host is accessible, a smaller range (/32?) would be better,
 // but for now, this will suffice.
 resource "google_compute_firewall" "bastion-ssh" {
-  name          = "gke-demo-bastion-fw"
+  name          = "gke-demo-bastion-fw-rbac"
   network       = "${var.vpc}"
   direction     = "INGRESS"
   project       = "${var.project}"

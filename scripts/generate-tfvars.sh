@@ -24,6 +24,8 @@
 # Stop immediately if something goes wrong
 set -euo pipefail
 
+ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
+
 # This script should be run from directory that contains the terraform directory.
 # The purpose is to populate defaults for subsequent terraform commands.
 
@@ -72,7 +74,7 @@ fi
 # Use git to find the top-level directory and confirm
 # by looking for the 'terraform' directory
 PROJECT_DIR="$(git rev-parse --show-toplevel)"
-if [[ -d "./terraform" ]]; then
+if [[ -d "$ROOT/terraform" ]]; then
 	PROJECT_DIR="$(pwd)"
 fi
 if [[ -z "${PROJECT_DIR}" ]]; then
@@ -86,7 +88,7 @@ fi
 (
 cd "${PROJECT_DIR}"
 
-TFVARS_FILE="./terraform/terraform.tfvars"
+TFVARS_FILE="$ROOT/terraform/terraform.tfvars"
 
 # We don't want to overwrite a pre-existing tfvars file
 if [[ -f "${TFVARS_FILE}" ]]
@@ -104,4 +106,3 @@ zone="${ZONE}"
 EOF
 fi
 )
-
