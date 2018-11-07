@@ -45,18 +45,18 @@ resource "google_project_iam_custom_role" "kube-api-ro" {
 }
 
 resource "google_service_account" "owner" {
-  account_id   = "gke-tutorial-owner"
-  display_name = "GKE Tutorial Owner"
+  account_id   = "gke-tutorial-owner-rbac"
+  display_name = "GKE Tutorial Owner RBAC"
 }
 
 resource "google_service_account" "auditor" {
-  account_id   = "gke-tutorial-auditor"
-  display_name = "GKE Tutorial Auditor"
+  account_id   = "gke-tutorial-auditor-rbac"
+  display_name = "GKE Tutorial Auditor RBAC"
 }
 
 resource "google_service_account" "admin" {
-  account_id   = "gke-tutorial-admin"
-  display_name = "GKE Tutorial Admin"
+  account_id   = "gke-tutorial-admin-rbac"
+  display_name = "GKE Tutorial Admin RBAC"
 }
 
 resource "google_project_iam_binding" "kube-api-ro" {

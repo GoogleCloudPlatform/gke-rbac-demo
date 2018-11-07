@@ -97,7 +97,7 @@ resource "google_compute_instance" "instance" {
     email  = "${var.service_account_email}"
     scopes = ["userinfo-email", "compute-ro", "storage-ro", "cloud-platform"]
   }
-  
+
   // local-exec providers may run before the host has fully initialized. However, they
   // are run sequentially in the order they were defined.
   //
