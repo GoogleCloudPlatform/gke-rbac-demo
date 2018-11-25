@@ -33,10 +33,6 @@ variable "secondary_ip_range" {
   default = "10.0.92.0/22"
 }
 
-variable "tags" {
-  type = "list"
-}
-
 variable "vpc_name" {
   type    = "string"
   default = "kube-net"

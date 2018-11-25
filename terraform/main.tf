@@ -29,7 +29,6 @@ module "network" {
   project  = "${var.project}"
   region   = "${var.region}"
   vpc_name = "kube-net"
-  tags     = "${var.bastion_tags}"
 }
 
 module "firewall" {
@@ -162,4 +161,3 @@ resource "google_container_cluster" "primary" {
     }
   }
 }
-
