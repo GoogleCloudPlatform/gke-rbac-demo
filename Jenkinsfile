@@ -62,10 +62,10 @@ spec:
           checkout scm
 
           // Setup gcloud service account access
-          #sh "gcloud auth activate-service-account --key-file=${GOOGLE_APPLICATION_CREDENTIALS}"
-          #sh "gcloud config set compute/zone ${env.ZONE}"
-          #sh "gcloud config set core/project ${env.PROJECT_ID}"
-          #sh "gcloud config set compute/region ${env.REGION}"
+          //sh "gcloud auth activate-service-account --key-file=${GOOGLE_APPLICATION_CREDENTIALS}"
+          //sh "gcloud config set compute/zone ${env.ZONE}"
+          //sh "gcloud config set core/project ${env.PROJECT_ID}"
+          //sh "gcloud config set compute/region ${env.REGION}"
          }
     }
     stage('Lint') {
@@ -76,14 +76,14 @@ spec:
 
     stage('Create') {
         container(containerName) {
-          #sh "make create"
+          //sh "make create"
           echo "make create"
         }
     }
 
     stage('Validate') {
         container(containerName) {
-          #sh "make validate"
+          //sh "make validate"
           echo "make validate"
         }
     }
