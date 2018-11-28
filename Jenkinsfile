@@ -99,8 +99,9 @@ spec:
    finally {
      stage('Teardown') {
       container(containerName) {
-        sh "make teardown"
-        sh "gcloud auth revoke"
+        //sh "make teardown"
+        //sh "gcloud auth revoke"
+        echo "make teardown"
       }
      }
    }
