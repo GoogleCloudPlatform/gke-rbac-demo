@@ -76,13 +76,15 @@ spec:
 
     stage('Create') {
         container(containerName) {
-          sh "make create"
+          #sh "make create"
+          echo "make create"
         }
     }
 
     stage('Validate') {
         container(containerName) {
-          sh "make validate"
+          #sh "make validate"
+          echo "make validate"
         }
     }
 
