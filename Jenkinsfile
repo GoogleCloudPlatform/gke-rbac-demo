@@ -38,15 +38,15 @@ spec:
     image: gcr.io/pso-helmsman-cicd/jenkins-k8s-node:${env.CONTAINER_VERSION}
     command: ['cat']
     tty: true
-    volumeMounts:
+    #volumeMounts:
     # Mount the dev service account key
-    - name: dev-key
-      mountPath: /home/jenkins/dev
-  volumes:
+    #- name: dev-key
+    #  mountPath: /home/jenkins/dev
+  #volumes:
   # Create a volume that contains the dev json key that was saved as a secret
-  - name: dev-key
-    secret:
-      secretName: jenkins-deploy-dev-infra
+  #- name: dev-key
+  #  secret:
+  #    secretName: jenkins-deploy-dev-infra
 """
  ) {
  node(label) {
@@ -54,7 +54,7 @@ spec:
     // Options covers all other job properties or wrapper functions that apply to entire Pipeline.
     properties([disableConcurrentBuilds()])
     // set env variable GOOGLE_APPLICATION_CREDENTIALS for Terraform
-    env.GOOGLE_APPLICATION_CREDENTIALS=GOOGLE_APPLICATION_CREDENTIALS
+    #env.GOOGLE_APPLICATION_CREDENTIALS=GOOGLE_APPLICATION_CREDENTIALS
 
     stage('Setup') {
         container(containerName) {
@@ -62,10 +62,10 @@ spec:
           checkout scm
 
           // Setup gcloud service account access
-          sh "gcloud auth activate-service-account --key-file=${GOOGLE_APPLICATION_CREDENTIALS}"
-          sh "gcloud config set compute/zone ${env.ZONE}"
-          sh "gcloud config set core/project ${env.PROJECT_ID}"
-          sh "gcloud config set compute/region ${env.REGION}"
+          #sh "gcloud auth activate-service-account --key-file=${GOOGLE_APPLICATION_CREDENTIALS}"
+          #sh "gcloud config set compute/zone ${env.ZONE}"
+          #sh "gcloud config set core/project ${env.PROJECT_ID}"
+          #sh "gcloud config set compute/region ${env.REGION}"
          }
     }
     stage('Lint') {
