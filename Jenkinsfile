@@ -54,7 +54,7 @@ spec:
     // Options covers all other job properties or wrapper functions that apply to entire Pipeline.
     properties([disableConcurrentBuilds()])
     // set env variable GOOGLE_APPLICATION_CREDENTIALS for Terraform
-    #env.GOOGLE_APPLICATION_CREDENTIALS=GOOGLE_APPLICATION_CREDENTIALS
+    //env.GOOGLE_APPLICATION_CREDENTIALS=GOOGLE_APPLICATION_CREDENTIALS
 
     stage('Setup') {
         container(containerName) {
