@@ -13,7 +13,7 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
-
+test
 */
 
 // The declarative agent is defined in yaml.  It was previously possible to
@@ -35,18 +35,18 @@ metadata:
 spec:
   containers:
   - name: ${containerName}
-    image: gcr.io/pso-helmsman-cicd/jenkins-k8s-node:${env.CONTAINER_VERSION}
+    image: gcr.io/boblee-sandbox/jenkins-k8s-node
     command: ['cat']
     tty: true
-    volumeMounts:
+    #volumeMounts:
     # Mount the dev service account key
-    - name: dev-key
-      mountPath: /home/jenkins/dev
-  volumes:
+    #- name: dev-key
+    #  mountPath: /home/jenkins/dev
+  #volumes:
   # Create a volume that contains the dev json key that was saved as a secret
-  - name: dev-key
-    secret:
-      secretName: jenkins-deploy-dev-infra
+  #- name: dev-key
+  #  secret:
+  #    secretName: jenkins-deploy-dev-infra
 """
  ) {
  node(label) {
@@ -54,7 +54,7 @@ spec:
     // Options covers all other job properties or wrapper functions that apply to entire Pipeline.
     properties([disableConcurrentBuilds()])
     // set env variable GOOGLE_APPLICATION_CREDENTIALS for Terraform
-    env.GOOGLE_APPLICATION_CREDENTIALS=GOOGLE_APPLICATION_CREDENTIALS
+    //env.GOOGLE_APPLICATION_CREDENTIALS=GOOGLE_APPLICATION_CREDENTIALS
 
     stage('Setup') {
         container(containerName) {
@@ -62,10 +62,10 @@ spec:
           checkout scm
 
           // Setup gcloud service account access
-          sh "gcloud auth activate-service-account --key-file=${GOOGLE_APPLICATION_CREDENTIALS}"
-          sh "gcloud config set compute/zone ${env.ZONE}"
-          sh "gcloud config set core/project ${env.PROJECT_ID}"
-          sh "gcloud config set compute/region ${env.REGION}"
+          //sh "gcloud auth activate-service-account --key-file=${GOOGLE_APPLICATION_CREDENTIALS}"
+          //sh "gcloud config set compute/zone ${env.ZONE}"
+          //sh "gcloud config set core/project ${env.PROJECT_ID}"
+          //sh "gcloud config set compute/region ${env.REGION}"
          }
     }
     stage('Lint') {
@@ -76,13 +76,15 @@ spec:
 
     stage('Create') {
         container(containerName) {
-          sh "make create"
+          //sh "make create"
+          echo "make create"
         }
     }
 
     stage('Validate') {
         container(containerName) {
-          sh "make validate"
+          //sh "make validate"
+          echo "make validate"
         }
     }
 
@@ -97,8 +99,9 @@ spec:
    finally {
      stage('Teardown') {
       container(containerName) {
-        sh "make teardown"
-        sh "gcloud auth revoke"
+        //sh "make teardown"
+        //sh "gcloud auth revoke"
+        echo "make teardown"
       }
      }
    }
