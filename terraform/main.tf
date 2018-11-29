@@ -29,7 +29,6 @@ module "network" {
   project  = "${var.project}"
   region   = "${var.region}"
   vpc_name = "kube-net"
-  tags     = "${var.bastion_tags}"
 }
 
 module "firewall" {
