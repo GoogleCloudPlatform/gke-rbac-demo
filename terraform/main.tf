@@ -89,7 +89,7 @@ resource "google_container_cluster" "primary" {
   network            = "${module.network.network_self_link}"
   subnetwork         = "${module.network.subnet_self_link}"
   min_master_version = "${data.google_container_engine_versions.on-prem.latest_master_version}"
-  initial_node_count = 3
+  initial_node_count = "${var.initial_node_count}"
 
   lifecycle {
     ignore_changes = ["ip_allocation_policy.0.services_secondary_range_name"]
@@ -162,4 +162,3 @@ resource "google_container_cluster" "primary" {
     }
   }
 }
-

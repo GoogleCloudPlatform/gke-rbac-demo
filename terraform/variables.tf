@@ -65,7 +65,7 @@ variable "cluster_name" {
 variable "initial_node_count" {
   description = "The number of nodes initially provisioned in the cluster"
   type        = "string"
-  default     = "3"
+  default     = "1"
 }
 
 variable "ip_range" {
