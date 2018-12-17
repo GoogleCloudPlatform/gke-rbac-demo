@@ -62,6 +62,20 @@ This tutorial focuses on the use of RBAC within a Kubernetes Engine cluster. It 
 
 ## Prerequisites
 
+### Run Demo in a Google Cloud Shell
+
+Click the button below to run the demo in a [Google Cloud Shell][10].
+
+[![Open in Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/open?cloudshell_git_repo=https://github.com/GoogleCloudPlatform/gke-rbac-demo.git&amp;cloudshell_git_branch=oics-blog&amp;cloudshell_working_dir=oics-blog&amp;cloudshell_image=gcr.io/graphite-cloud-shell-images/terraform:latest&amp;open_in_editor=main.tf&amp;cloudshell_print=./motd&amp;cloudshell_tutorial=./tutorial.md)
+
+All the tools for the demo are installed. When using Cloud Shell execute the following
+command in order to setup gcloud cli. When executing this command please setup your region
+and zone.
+
+```console
+gcloud init
+```
+
 ### Tools
 1. [Terraform >= 0.11.7](https://www.terraform.io/downloads.html)
 2. [Google Cloud SDK version >= 204.0.0](https://cloud.google.com/sdk/docs/downloads-versioned-archives)
