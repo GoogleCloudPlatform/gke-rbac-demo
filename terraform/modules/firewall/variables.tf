@@ -19,7 +19,7 @@ variable "project" {
   type        = "string"
 }
 
-variable "vpc" {
+variable "vpc_name" {
   description = "network for the firewall"
   type        = "string"
 }

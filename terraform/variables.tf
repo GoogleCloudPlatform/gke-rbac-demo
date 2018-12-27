@@ -44,6 +44,12 @@ Optional Variables
 Defaults will be used for these, if not overridden at runtime.
 */
 
+variable "vpc_name" {
+  description = "Name of the network to be created."
+  type        = "string"
+  default     = "rbac-net"
+}
+
 variable "bastion_machine_type" {
   description = "The instance size to use for your bastion instance."
   type        = "string"
@@ -59,7 +65,7 @@ variable "bastion_tags" {
 variable "cluster_name" {
   description = "The name to give the new Kubernetes cluster."
   type        = "string"
-  default     = "gke-demo-cluster"
+  default     = "rbac-demo-cluster"
 }
 
 variable "initial_node_count" {
@@ -103,5 +109,5 @@ variable "secondary_subnet_name" {
   // See https://cloud.google.com/kubernetes-engine/docs/how-to/alias-ips
   description = "The name to give the secondary subnet."
   type        = "string"
-  default     = "kube-net-secondary-sub"
+  default     = "rbac-net-secondary-sub"
 }
