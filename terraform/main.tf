@@ -28,13 +28,13 @@ module "network" {
   source   = "./modules/network"
   project  = "${var.project}"
   region   = "${var.region}"
-  vpc_name = "kube-net"
+  vpc_name = "${var.vpc_name}"
 }
 
 module "firewall" {
   source   = "./modules/firewall"
   project  = "${var.project}"
-  vpc      = "${module.network.network_self_link}"
+  vpc_name = "${module.network.network_self_link}"
   net_tags = "${var.bastion_tags}"
 }
 
