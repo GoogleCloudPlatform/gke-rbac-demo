@@ -42,6 +42,13 @@ spec:
     # Mount the dev service account key
     - name: dev-key
       mountPath: /home/jenkins/dev
+    resources:
+      limits:
+        cpu: 2
+        memory: 2Gi
+      requests:
+        cpu: 1
+        memory: 1Gi
   volumes:
   # Create a volume that contains the dev json key that was saved as a secret
   - name: dev-key
