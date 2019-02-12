@@ -177,14 +177,14 @@ google_container_cluster.primary: Still creating... (2m50s elapsed)
 google_container_cluster.primary: Still creating... (3m0s elapsed)
 google_container_cluster.primary: Still creating... (3m10s elapsed)
 google_container_cluster.primary: Still creating... (3m20s elapsed)
-google_container_cluster.primary: Creation complete after 3m24s (ID: gke-demo-cluster)
+google_container_cluster.primary: Creation complete after 3m24s (ID: rbac-demo-cluster)
 
 Apply complete! Resources: 14 added, 0 changed, 0 destroyed.
 ```
 
 You can also confirm the cluster was created successfully by logging into the cloud console and ensuring that Legacy Authorization is disabled for the new cluster.
 
-![Cluster settings in console](./img/cluster_in_console.png)
+![Cluster settings in console](./img/cluster_in_console_updated.png)
 
 ## Scenario 1: Assigning permissions by user persona
 
@@ -224,12 +224,12 @@ Three test hosts have been provisioned by the terraform script. Each node has `k
 gcloud compute instances list
 
 NAME                                             ZONE           MACHINE_TYPE   PREEMPTIBLE  INTERNAL_IP  EXTERNAL_IP     STATUS
-gke-gke-demo-cluster-default-pool-a9cd3468-4vpc  us-central1-a  n1-standard-1               10.0.96.5                    RUNNING
-gke-gke-demo-cluster-default-pool-a9cd3468-b47f  us-central1-a  n1-standard-1               10.0.96.6                    RUNNING
-gke-gke-demo-cluster-default-pool-a9cd3468-rt5p  us-central1-a  n1-standard-1               10.0.96.7                    RUNNING
-gke-tutorial-auditor                             us-central1-a  f1-micro                    10.0.96.4    35.224.148.28   RUNNING
-gke-tutorial-admin                               us-central1-a  f1-micro                    10.0.96.3    35.226.237.142  RUNNING
-gke-tutorial-owner                               us-central1-a  f1-micro                    10.0.96.2    35.194.58.130   RUNNING
+rbac-demo-cluster-default-pool-a9cd3468-4vpc    us-central1-a  n1-standard-1                10.0.96.5                    RUNNING
+rbac-demo-cluster-default-pool-a9cd3468-b47f    us-central1-a  n1-standard-1                10.0.96.6                    RUNNING
+rbac-demo-cluster-default-pool-a9cd3468-rt5p    us-central1-a  n1-standard-1                10.0.96.7                    RUNNING
+gke-tutorial-auditor                            us-central1-a  f1-micro                     10.0.96.4    35.224.148.28    RUNNING
+gke-tutorial-admin                              us-central1-a  f1-micro                     10.0.96.3    35.226.237.142   RUNNING
+gke-tutorial-owner                              us-central1-a  f1-micro                     10.0.96.2    35.194.58.130    RUNNING
 ```
 
 ### Creating the RBAC rules
@@ -418,17 +418,15 @@ pod-labeler-6d9757c488-tk6sp   0/1       Error     1          1m
 kubectl describe pod -l app=pod-labeler | tail -n 20
 
 Events:
-  Type     Reason                 Age                From                                                 Message
-  ----     ------                 ----               ----                                                 -------
-  Normal   Scheduled              1m                 default-scheduler                                    Successfully assigned pod-labeler-6d9757c488-tk6sp to gke-gke-demo-cluster-default-pool-475abca2-1d0z
-  Normal   SuccessfulMountVolume  1m                 kubelet, gke-gke-demo-cluster-default-pool-475abca2-1d0z  MountVolume.SetUp succeeded for volume "default-token-c2dv5"
-  Normal   Pulling                16s (x2 over 1m)   kubelet, gke-gke-demo-cluster-default-pool-475abca2-1d0z  pulling image "gcr.io/kpercy-gke-20180514/pod-labeler:latest"
-  Normal   Pulled                 16s (x2 over 18s)  kubelet, gke-gke-demo-cluster-default-pool-475abca2-1d0z  Successfully pulled image "gcr.io/kpercy-gke-20180514/p
-od-labeler:latest"
-  Normal   Created                16s (x2 over 18s)  kubelet, gke-gke-demo-cluster-default-pool-475abca2-1d0z  Created container
-  Normal   Started                15s (x2 over 18s)  kubelet, gke-gke-demo-cluster-default-pool-475abca2-1d0z  Started container
-  Warning  BackOff                14s                kubelet, gke-gke-demo-cluster-default-pool-475abca2-1d0z  Back-off restarting failed container
-  Warning  FailedSync             14s                kubelet, gke-gke-demo-cluster-default-pool-475abca2-1d0z  Error syncing pod
+  Type     Reason     Age                     From                                                       Message
+  ----     ------     ----                    ----                                                       -------
+  Normal   Scheduled  7m35s                   default-scheduler                                          Successfully assigned default/pod-labeler-5b4bd6cf9-w66jd to gke-rbac-demo-cluster-default-pool-3d348201-x0pk
+  Normal   Pulling    7m34s                   kubelet, gke-rbac-demo-cluster-default-pool-3d348201-x0pk  pulling image "gcr.io/pso-examples/pod-labeler:0.1.5"
+  Normal   Pulled     6m56s                   kubelet, gke-rbac-demo-cluster-default-pool-3d348201-x0pk  Successfully pulled image "gcr.io/pso-examples/pod-labeler:0.1.5"
+  Normal   Created    5m29s (x5 over 6m56s)   kubelet, gke-rbac-demo-cluster-default-pool-3d348201-x0pk  Created container
+  Normal   Pulled     5m29s (x4 over 6m54s)   kubelet, gke-rbac-demo-cluster-default-pool-3d348201-x0pk  Container image "gcr.io/pso-examples/pod-labeler:0.1.5" already present on machine
+  Normal   Started    5m28s (x5 over 6m56s)   kubelet, gke-rbac-demo-cluster-default-pool-3d348201-x0pk  Started container
+  Warning  BackOff    2m25s (x23 over 6m52s)  kubelet, gke-rbac-demo-cluster-default-pool-3d348201-x0pk  Back-off restarting failed container
 
 ```
 
@@ -507,6 +505,7 @@ kubectl get deployment pod-labeler -oyaml
   securityContext: {}
   serviceAccount: pod-labeler
   ...
+
 ```
 
 ### Diagnosing insufficient privileges
@@ -549,6 +548,14 @@ HTTP response body: {"kind":"Status","apiVersion":"v1","metadata":{},"status":"F
 ```
 
 Since this is failing on a PATCH operation, you can also see the error in stackdriver. This is useful if the application logs are not sufficiently verbose:
+
+```console
+
+On Stackdriver Logging page, click on the 'Advance filter' option and filter by:
+
+protoPayload.methodName="io.k8s.core.v1.pods.patch"
+
+```
 
 ![Stack driver logs](./img/stackdriver.png)
 
@@ -710,7 +717,7 @@ labeling pod python-b89455c85-m284f
 Log out of the bastion host and run the following to destroy the environment:
 
 ```console
-make tf-destroy
+make teardown
 ```
 
 ```console

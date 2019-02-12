@@ -125,8 +125,12 @@ resource "google_container_cluster" "primary" {
     cluster_secondary_range_name = "secondary-range"
   }
 
-  master_ipv4_cidr_block = "10.0.90.0/28"
-  private_cluster        = true
+  // In a private cluster, the master has two IP addresses, one public and one
+  // private. Nodes communicate to the master through this private IP address.
+  private_cluster_config {
+    enable_private_nodes   = true
+    master_ipv4_cidr_block = "10.0.90.0/28"
+  }
 
   // (Required for private cluster, optional otherwise) network (cidr) from which cluster is accessible
   master_authorized_networks_config {
