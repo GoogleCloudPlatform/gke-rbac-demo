@@ -55,7 +55,6 @@ variable "bastion_machine_type" {
   type        = "string"
   default     = "f1-micro"
 }
-
 variable "bastion_tags" {
   description = "A list of tags applied to your bastion instance."
   type        = "list"
@@ -71,7 +70,7 @@ variable "cluster_name" {
 variable "initial_node_count" {
   description = "The number of nodes initially provisioned in the cluster"
   type        = "string"
-  default     = "1"
+  default     = "2"
 }
 
 variable "ip_range" {
