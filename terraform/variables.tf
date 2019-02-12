@@ -55,6 +55,7 @@ variable "bastion_machine_type" {
   type        = "string"
   default     = "f1-micro"
 }
+
 variable "bastion_tags" {
   description = "A list of tags applied to your bastion instance."
   type        = "list"
