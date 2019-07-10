@@ -123,7 +123,6 @@ resource "google_container_cluster" "primary" {
   // secondary ranges) are supported. This will activate IP aliases.
   ip_allocation_policy {
     cluster_secondary_range_name  = "secondary-range"
-    services_secondary_range_name = "services-secondary-range"
   }
 
   // In a private cluster, the master has two IP addresses, one public and one

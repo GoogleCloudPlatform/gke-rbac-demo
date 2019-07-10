@@ -16,6 +16,6 @@ limitations under the License.
 
 // The public IP of the bastion instance
 output "external_ip" {
-  value = google_compute_instance.instance.network_interface[0].access_config[0].assigned_nat_ip
+  value = google_compute_instance.instance.network_interface[0].access_config[0].nat_ip
 }
 
