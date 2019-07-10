@@ -16,22 +16,23 @@ limitations under the License.
 
 // Configures the default project and zone for underlying Google Cloud API calls
 provider "google" {
-  project = "${var.project}"
-  zone    = "${var.zone}"
-  version = "~> 1.13"
+  project = var.project
+  zone    = var.zone
+  version = "~> 2.10.0"
 }
 
 // Pins the version of the "random" provider
 provider "random" {
-  version = "~> 1.3"
+  version = "~> 2.1.2"
 }
 
 // Pins the version of the "template" provider
 provider "template" {
-  version = "~> 1.0"
+  version = "~> 2.1.2"
 }
 
 // Pins the version of the "null" provider
 provider "null" {
-  version = "~> 1.0"
+  version = "~> 2.1.2"
 }
+

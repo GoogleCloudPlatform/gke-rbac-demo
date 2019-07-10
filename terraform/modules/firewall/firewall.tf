@@ -19,9 +19,9 @@ limitations under the License.
 // but for now, this will suffice.
 resource "google_compute_firewall" "bastion-ssh" {
   name          = "gke-demo-bastion-fw-rbac"
-  network       = "${var.vpc_name}"
+  network       = var.vpc_name
   direction     = "INGRESS"
-  project       = "${var.project}"
+  project       = var.project
   source_ranges = ["0.0.0.0/0"]
 
   allow {
@@ -29,5 +29,6 @@ resource "google_compute_firewall" "bastion-ssh" {
     ports    = ["22"]
   }
 
-  target_tags = "${var.net_tags}"
+  target_tags = var.net_tags
 }
+

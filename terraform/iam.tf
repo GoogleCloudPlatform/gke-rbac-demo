@@ -38,7 +38,9 @@ resource "google_project_iam_custom_role" "kube-api-ro" {
   title       = "Kubernetes API (RO)"
   description = "Grants read-only API access that can be further restricted with RBAC"
 
-  permissions = ["container.apiServices.get", "container.apiServices.list",
+  permissions = [
+    "container.apiServices.get",
+    "container.apiServices.list",
     "container.clusters.get",
     "container.clusters.getCredentials",
   ]
@@ -69,7 +71,8 @@ resource "google_project_iam_binding" "kube-api-ro" {
 }
 
 resource "google_project_iam_member" "kube-api-admin" {
-  project = "${var.project}"
+  project = var.project
   role    = "roles/container.admin"
   member  = "serviceAccount:${google_service_account.admin.email}"
 }
+

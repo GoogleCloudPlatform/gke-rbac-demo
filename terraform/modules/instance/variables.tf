@@ -16,62 +16,63 @@ limitations under the License.
 
 variable "hostname" {
   description = "the hostname"
-  type        = "string"
+  type        = string
 }
 
 variable "machine_type" {
   description = "the instance type"
-  type        = "string"
+  type        = string
 }
 
 variable "project" {
   description = "the project for this instance"
-  type        = "string"
+  type        = string
 }
 
 variable "zone" {
   description = "the desired zone for the host"
-  type        = "string"
+  type        = string
 }
 
 variable "tags" {
   description = "the instance tags"
-  type        = "list"
+  type        = list(string)
 }
 
 variable "cluster_subnet" {
   description = "the subnet in which to put the private IP address"
-  type        = "string"
+  type        = string
 }
 
 variable "cluster_name" {
   description = "the name of the cluster for which this host will be used to connect"
-  type        = "string"
+  type        = string
 }
 
 variable "owner_email" {
   description = "email of a test account to which to grant read-write privileges via RBAC"
-  type        = "string"
+  type        = string
 }
 
 variable "auditor_email" {
   description = "email of a test account to which to grant read-only privileges via RBAC"
-  type        = "string"
+  type        = string
 }
 
 variable "service_account_email" {
   description = ""
-  type        = "string"
+  type        = string
   default     = ""
 }
 
 variable "grant_cluster_admin" {
   description = ""
-  type        = "string"
+  type        = string
   default     = "0"
 }
 
 variable "vpc_name" {
-  type    = "string"
+  type    = string
   default = ""
 }
+

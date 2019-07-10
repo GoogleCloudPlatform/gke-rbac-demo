@@ -23,6 +23,7 @@ kubectl get clusterrolebinding gke-tutorial-admin-binding &> /dev/null ||
 kubectl create clusterrolebinding gke-tutorial-admin-binding \
 --clusterrole cluster-admin --user $(gcloud config get-value account)
 EOF
+
   }
 }
 
@@ -37,74 +38,78 @@ echo "gcloud container clusters get-credentials $${cluster_name} \
 echo "$${admin_binding}" >> /etc/profile
 EOF
 
-  vars {
-    cluster_name = "${var.cluster_name}"
-    zone         = "${var.zone}"
-    project      = "${var.project}"
 
-    // If this instance needs admin access, bind the user to the cluster-admin role,
-    //if it hasn't already been bound
-    admin_binding = "${var.grant_cluster_admin ?
-        "${data.null_data_source.grant_admin.outputs["command"]}" : ""}"
-  }
+vars = {
+cluster_name = var.cluster_name
+zone         = var.zone
+project      = var.project
+// If this instance needs admin access, bind the user to the cluster-admin role,
+//if it hasn't already been bound
+admin_binding = var.grant_cluster_admin ? data.null_data_source.grant_admin.outputs["command"] : ""
+}
 }
 
 // https://www.terraform.io/docs/providers/template/index.html
 // render the rbac.yaml to include generated service account names
 data "template_file" "rbac_yaml" {
-  template = "${file("${path.module}/templates/rbac.yaml")}"
+template = file("${path.module}/templates/rbac.yaml")
 
-  vars {
-    auditor_email = "${var.auditor_email}"
-    owner_email   = "${var.owner_email}"
-  }
+vars = {
+auditor_email = var.auditor_email
+owner_email   = var.owner_email
+}
 }
 
 // https://www.terraform.io/docs/providers/google/r/compute_instance.html
 // bastion host for access and administration of a private cluster.
 resource "google_compute_instance" "instance" {
-  name         = "${var.hostname}"
-  machine_type = "${var.machine_type}"
-  zone         = "${var.zone}"
-  project      = "${var.project}"
-  tags         = "${var.tags}"
+name         = var.hostname
+machine_type = var.machine_type
+zone         = var.zone
+project      = var.project
+tags         = var.tags
 
-  // Specify the Operating System Family and version.
-  boot_disk {
-    initialize_params {
-      image = "debian-cloud/debian-9"
-    }
-  }
+// Specify the Operating System Family and version.
+boot_disk {
+initialize_params {
+image = "debian-cloud/debian-9"
+}
+}
 
-  // Define a network interface in the correct subnet.
-  network_interface {
-    subnetwork = "${var.cluster_subnet}"
+// Define a network interface in the correct subnet.
+network_interface {
+subnetwork = var.cluster_subnet
 
-    // Add an ephemeral external IP.
-    access_config {
-      // Ephemeral IP
-    }
-  }
+// Add an ephemeral external IP.
+access_config {
+// Ephemeral IP
+}
+}
 
-  // Ensure that when the bastion host is booted, it will have kubectl.
-  metadata_startup_script = "${data.template_file.startup_script.rendered}"
+// Ensure that when the bastion host is booted, it will have kubectl.
+metadata_startup_script = data.template_file.startup_script.rendered
 
-  // Allow the instance to be stopped by terraform when updating configuration
-  allow_stopping_for_update = true
+// Allow the instance to be stopped by terraform when updating configuration
+allow_stopping_for_update = true
 
-  // Necessary scopes for administering kubernetes.
-  service_account {
-    email  = "${var.service_account_email}"
-    scopes = ["userinfo-email", "compute-ro", "storage-ro", "cloud-platform"]
-  }
+// Necessary scopes for administering kubernetes.
+service_account {
+email  = var.service_account_email
+scopes = ["userinfo-email", "compute-ro", "storage-ro", "cloud-platform"]
+}
 
-  // local-exec providers may run before the host has fully initialized. However, they
-  // are run sequentially in the order they were defined.
-  //
-  // This provider is used to block the subsequent providers until the instance
-  // is available.
-  provisioner "local-exec" {
-    command = <<EOF
+// local-exec providers may run before the host has fully initialized. However, they
+// are run sequentially in the order they were defined.
+//
+// This provider is used to block the subsequent providers until the instance
+// is available.
+// local-exec providers may run before the host has fully initialized. However, they
+// are run sequentially in the order they were defined.
+//
+// This provider is used to block the subsequent providers until the instance
+// is available.
+provisioner "local-exec" {
+command = <<EOF
         READY=""
         for i in $(seq 1 18); do
           if gcloud compute ssh ${var.hostname} --command uptime; then
@@ -120,13 +125,15 @@ resource "google_compute_instance" "instance" {
           exit 1
         fi
 EOF
-  }
 
-  provisioner "local-exec" {
-    command = "echo \"${data.template_file.rbac_yaml.rendered}\" > '${path.module}/manifests/rbac.yaml'"
-  }
-
-  provisioner "local-exec" {
-    command = "gcloud compute scp --project ${var.project} --zone ${var.zone} --recurse ${path.module}/manifests ${var.hostname}:"
-  }
 }
+
+provisioner "local-exec" {
+command = "echo \"${data.template_file.rbac_yaml.rendered}\" > '${path.module}/manifests/rbac.yaml'"
+}
+
+provisioner "local-exec" {
+command = "gcloud compute scp --project ${var.project} --zone ${var.zone} --recurse ${path.module}/manifests ${var.hostname}:"
+}
+}
+
