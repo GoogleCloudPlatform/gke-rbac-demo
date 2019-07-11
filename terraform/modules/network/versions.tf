@@ -14,21 +14,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-// https://www.terraform.io/docs/providers/google/r/compute_firewall.html
-// Need a firewall rule so that the bastion host is accessible, a smaller range (/32?) would be better,
-// but for now, this will suffice.
-resource "google_compute_firewall" "bastion-ssh" {
-  name          = "gke-demo-bastion-fw-rbac"
-  network       = var.vpc_name
-  direction     = "INGRESS"
-  project       = var.project
-  source_ranges = ["0.0.0.0/0"]
-
-  allow {
-    protocol = "tcp"
-    ports    = ["22"]
-  }
-
-  target_tags = var.net_tags
+terraform {
+  required_version = ">= 0.12"
 }
-

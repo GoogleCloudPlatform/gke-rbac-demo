@@ -17,8 +17,8 @@ limitations under the License.
 // Provides access to available Google Container Engine versions in a zone for a given project.
 // https://www.terraform.io/docs/providers/google/d/google_container_engine_versions.html
 data "google_container_engine_versions" "on-prem" {
-  zone    = "${var.zone}"
-  project = "${var.project}"
+  zone    = var.zone
+  project = var.project
 }
 
 // https://www.terraform.io/docs/providers/google/r/google_container_cluster.html
@@ -26,75 +26,75 @@ data "google_container_engine_versions" "on-prem" {
 
 module "network" {
   source   = "./modules/network"
-  project  = "${var.project}"
-  region   = "${var.region}"
-  vpc_name = "${var.vpc_name}"
+  project  = var.project
+  region   = var.region
+  vpc_name = var.vpc_name
 }
 
 module "firewall" {
   source   = "./modules/firewall"
-  project  = "${var.project}"
-  vpc_name = "${module.network.network_self_link}"
-  net_tags = "${var.bastion_tags}"
+  project  = var.project
+  vpc_name = module.network.network_self_link
+  net_tags = var.bastion_tags
 }
 
 module "bastion" {
   source                = "./modules/instance"
-  project               = "${var.project}"
+  project               = var.project
   hostname              = "gke-tutorial-admin"
-  machine_type          = "${var.bastion_machine_type}"
-  zone                  = "${var.zone}"
-  tags                  = "${var.bastion_tags}"
-  cluster_subnet        = "${module.network.subnet_self_link}"
-  cluster_name          = "${var.cluster_name}"
-  owner_email           = "${google_service_account.owner.email}"
-  auditor_email         = "${google_service_account.auditor.email}"
-  service_account_email = "${google_service_account.admin.email}"
+  machine_type          = var.bastion_machine_type
+  zone                  = var.zone
+  tags                  = var.bastion_tags
+  cluster_subnet        = module.network.subnet_self_link
+  cluster_name          = var.cluster_name
+  owner_email           = google_service_account.owner.email
+  auditor_email         = google_service_account.auditor.email
+  service_account_email = google_service_account.admin.email
   grant_cluster_admin   = "1"
 }
 
 module "owner_instance" {
   source                = "./modules/instance"
-  project               = "${var.project}"
+  project               = var.project
   hostname              = "gke-tutorial-owner"
-  machine_type          = "${var.bastion_machine_type}"
-  zone                  = "${var.zone}"
-  tags                  = "${var.bastion_tags}"
-  cluster_subnet        = "${module.network.subnet_self_link}"
-  cluster_name          = "${var.cluster_name}"
-  owner_email           = "${google_service_account.owner.email}"
-  auditor_email         = "${google_service_account.auditor.email}"
-  service_account_email = "${google_service_account.owner.email}"
+  machine_type          = var.bastion_machine_type
+  zone                  = var.zone
+  tags                  = var.bastion_tags
+  cluster_subnet        = module.network.subnet_self_link
+  cluster_name          = var.cluster_name
+  owner_email           = google_service_account.owner.email
+  auditor_email         = google_service_account.auditor.email
+  service_account_email = google_service_account.owner.email
 }
 
 module "auditor_instance" {
   source                = "./modules/instance"
-  project               = "${var.project}"
+  project               = var.project
   hostname              = "gke-tutorial-auditor"
-  machine_type          = "${var.bastion_machine_type}"
-  zone                  = "${var.zone}"
-  tags                  = "${var.bastion_tags}"
-  cluster_subnet        = "${module.network.subnet_self_link}"
-  cluster_name          = "${var.cluster_name}"
-  owner_email           = "${google_service_account.owner.email}"
-  auditor_email         = "${google_service_account.auditor.email}"
-  service_account_email = "${google_service_account.auditor.email}"
+  machine_type          = var.bastion_machine_type
+  zone                  = var.zone
+  tags                  = var.bastion_tags
+  cluster_subnet        = module.network.subnet_self_link
+  cluster_name          = var.cluster_name
+  owner_email           = google_service_account.owner.email
+  auditor_email         = google_service_account.auditor.email
+  service_account_email = google_service_account.auditor.email
 }
 
 resource "google_container_cluster" "primary" {
-  name               = "${var.cluster_name}"
-  project            = "${var.project}"
-  zone               = "${var.zone}"
-  network            = "${module.network.network_self_link}"
-  subnetwork         = "${module.network.subnet_self_link}"
-  min_master_version = "${data.google_container_engine_versions.on-prem.latest_master_version}"
-  initial_node_count = "${var.initial_node_count}"
+  name               = var.cluster_name
+  project            = var.project
+  zone               = var.zone
+  network            = module.network.network_self_link
+  subnetwork         = module.network.subnet_self_link
+  min_master_version = data.google_container_engine_versions.on-prem.latest_master_version
+  initial_node_count = var.initial_node_count
 
   lifecycle {
-    ignore_changes = ["ip_allocation_policy.0.services_secondary_range_name"]
+    ignore_changes = [ip_allocation_policy[0].services_secondary_range_name]
   }
 
-  additional_zones = []
+  node_locations = []
 
   // Scopes necessary for the nodes to function correctly
   node_config {
@@ -105,11 +105,11 @@ resource "google_container_cluster" "primary" {
       "https://www.googleapis.com/auth/monitoring",
     ]
 
-    machine_type = "${var.node_machine_type}"
+    machine_type = var.node_machine_type
     image_type   = "COS"
 
     // (Optional) The Kubernetes labels (key/value pairs) to be applied to each node.
-    labels {
+    labels = {
       status = "poc"
     }
 
@@ -134,20 +134,18 @@ resource "google_container_cluster" "primary" {
 
   // (Required for private cluster, optional otherwise) network (cidr) from which cluster is accessible
   master_authorized_networks_config {
-    cidr_blocks = [
-      {
-        display_name = "gke-tutorial-admin"
-        cidr_block   = "${module.bastion.external_ip}/32"
-      },
-      {
-        display_name = "gke-tutorial-owner"
-        cidr_block   = "${module.owner_instance.external_ip}/32"
-      },
-      {
-        display_name = "gke-tutorial-auditor"
-        cidr_block   = "${module.auditor_instance.external_ip}/32"
-      },
-    ]
+    cidr_blocks {
+      display_name = "gke-tutorial-admin"
+      cidr_block   = join("/", [module.bastion.external_ip, "32"])
+    }
+    cidr_blocks {
+      display_name = "gke-tutorial-owner"
+      cidr_block   = join("/", [module.owner_instance.external_ip, "32"])
+    }
+    cidr_blocks {
+      display_name = "gke-tutorial-auditor"
+      cidr_block   = join("/", [module.auditor_instance.external_ip, "32"])
+    }
   }
 
   // (Required for Calico, optional otherwise) Configuration options for the NetworkPolicy feature
@@ -165,3 +163,4 @@ resource "google_container_cluster" "primary" {
     }
   }
 }
+

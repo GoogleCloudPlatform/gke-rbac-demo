@@ -16,15 +16,16 @@ limitations under the License.
 
 variable "project" {
   description = "the project for this network"
-  type        = "string"
+  type        = string
 }
 
 variable "vpc_name" {
   description = "network for the firewall"
-  type        = "string"
+  type        = string
 }
 
 variable "net_tags" {
   description = "tags for the firewall"
-  type        = "list"
+  type        = list(string)
 }
+
