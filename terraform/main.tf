@@ -122,7 +122,7 @@ resource "google_container_cluster" "primary" {
   // As of now, only pre-allocated subnetworks (custom type with
   // secondary ranges) are supported. This will activate IP aliases.
   ip_allocation_policy {
-    cluster_secondary_range_name  = "secondary-range"
+    cluster_secondary_range_name = "secondary-range"
   }
 
   // In a private cluster, the master has two IP addresses, one public and one
@@ -136,15 +136,15 @@ resource "google_container_cluster" "primary" {
   master_authorized_networks_config {
     cidr_blocks {
       display_name = "gke-tutorial-admin"
-      cidr_block   = join("/", [module.bastion.external_ip,"32"])
+      cidr_block   = join("/", [module.bastion.external_ip, "32"])
     }
     cidr_blocks {
       display_name = "gke-tutorial-owner"
-      cidr_block   = join("/", [module.owner_instance.external_ip,"32"])
+      cidr_block   = join("/", [module.owner_instance.external_ip, "32"])
     }
     cidr_blocks {
       display_name = "gke-tutorial-auditor"
-      cidr_block   = join("/", [module.auditor_instance.external_ip,"32"])
+      cidr_block   = join("/", [module.auditor_instance.external_ip, "32"])
     }
   }
 

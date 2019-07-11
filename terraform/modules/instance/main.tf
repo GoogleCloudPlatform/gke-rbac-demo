@@ -39,14 +39,14 @@ echo "$${admin_binding}" >> /etc/profile
 EOF
 
 
-vars = {
-cluster_name = var.cluster_name
-zone         = var.zone
-project      = var.project
-// If this instance needs admin access, bind the user to the cluster-admin role,
-//if it hasn't already been bound
-admin_binding = var.grant_cluster_admin ? data.null_data_source.grant_admin.outputs["command"] : ""
-}
+  vars = {
+    cluster_name = var.cluster_name
+    zone         = var.zone
+    project      = var.project
+    // If this instance needs admin access, bind the user to the cluster-admin role,
+    //if it hasn't already been bound
+    admin_binding = var.grant_cluster_admin ? data.null_data_source.grant_admin.outputs["command"] : ""
+  }
 }
 
 // https://www.terraform.io/docs/providers/template/index.html
@@ -54,10 +54,10 @@ admin_binding = var.grant_cluster_admin ? data.null_data_source.grant_admin.outp
 data "template_file" "rbac_yaml" {
 template = file("${path.module}/templates/rbac.yaml")
 
-vars = {
-auditor_email = var.auditor_email
-owner_email   = var.owner_email
-}
+  vars = {
+    auditor_email = var.auditor_email
+    owner_email   = var.owner_email
+  }
 }
 
 // https://www.terraform.io/docs/providers/google/r/compute_instance.html
