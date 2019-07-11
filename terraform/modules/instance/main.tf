@@ -109,7 +109,7 @@ scopes = ["userinfo-email", "compute-ro", "storage-ro", "cloud-platform"]
 // This provider is used to block the subsequent providers until the instance
 // is available.
 provisioner "local-exec" {
-command = <<EOF
+  command = <<EOF
         READY=""
         for i in $(seq 1 18); do
           if gcloud compute ssh ${var.hostname} --command uptime; then
@@ -129,11 +129,11 @@ EOF
 }
 
 provisioner "local-exec" {
-command = "echo \"${data.template_file.rbac_yaml.rendered}\" > '${path.module}/manifests/rbac.yaml'"
+  command = "echo \"${data.template_file.rbac_yaml.rendered}\" > '${path.module}/manifests/rbac.yaml'"
 }
 
 provisioner "local-exec" {
-command = "gcloud compute scp --project ${var.project} --zone ${var.zone} --recurse ${path.module}/manifests ${var.hostname}:"
+  command = "gcloud compute scp --project ${var.project} --zone ${var.zone} --recurse ${path.module}/manifests ${var.hostname}:"
 }
 }
 

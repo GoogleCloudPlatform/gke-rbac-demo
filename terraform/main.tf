@@ -141,12 +141,10 @@ resource "google_container_cluster" "primary" {
     cidr_blocks {
       display_name = "gke-tutorial-owner"
       cidr_block   = join("/", [module.owner_instance.external_ip,"32"])
-//      cidr_block   = "${module.owner_instance.external_ip}/32"
     }
     cidr_blocks {
       display_name = "gke-tutorial-auditor"
       cidr_block   = join("/", [module.auditor_instance.external_ip,"32"])
-//      cidr_block   = "${module.auditor_instance.external_ip}/32"
     }
   }
 
