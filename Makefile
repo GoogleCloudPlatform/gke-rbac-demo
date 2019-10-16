@@ -26,6 +26,10 @@ lint: check_shell check_shebangs check_python check_golang check_terraform \
 create:
 	@source $(ROOT)/scripts/create.sh
 
+.PHONY: apply
+apply:
+	@source $(ROOT)/scripts/apply.sh
+
 .PHONY: validate
 validate:
 	@source $(ROOT)/scripts/validate.sh
