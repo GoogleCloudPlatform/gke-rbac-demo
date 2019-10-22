@@ -745,8 +745,7 @@ The credentials that Terraform is using do not provide the necessary permissions
 Terraform occasionally complains about an invalid fingerprint, when updating certain resources. If you see the error below, simply re-run the command. ![terraform fingerprint error](./img/terraform_fingerprint_error.png)
 
 ### Terraform project creation crash caused by errors or timeouts
-
-If Terraform crashes for any reason(errors, timeouts etc) when you run "make create" to build the project, please make sure that on next attempt you use "make apply". This will allow you to use the same terraform state file and will resume the project creation process. 
+If Terraform crashes for any reason(errors, timeouts etc) when you run "make create" to build the project, please make sure that on next attempt you use "make apply". This will allow you to use the same terraform state file and will resume the project creation process.
 
 ## Relevant Material
 
