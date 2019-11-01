@@ -87,7 +87,7 @@ variable "master_cidr_block" {
 }
 
 variable "node_machine_type" {
-  description = "The instance to use for your bastion instance"
+  description = "The instance to use for your node instances"
   type        = string
   default     = "n1-standard-1"
 }
