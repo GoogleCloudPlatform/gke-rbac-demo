@@ -17,8 +17,8 @@ limitations under the License.
 // Provides access to available Google Container Engine versions in a zone for a given project.
 // https://www.terraform.io/docs/providers/google/d/google_container_engine_versions.html
 data "google_container_engine_versions" "on-prem" {
-  zone    = var.zone
-  project = var.project
+  location = var.zone
+  project  = var.project
 }
 
 // https://www.terraform.io/docs/providers/google/r/google_container_cluster.html
@@ -84,7 +84,7 @@ module "auditor_instance" {
 resource "google_container_cluster" "primary" {
   name               = var.cluster_name
   project            = var.project
-  zone               = var.zone
+  location           = var.zone
   network            = module.network.network_self_link
   subnetwork         = module.network.subnet_self_link
   min_master_version = data.google_container_engine_versions.on-prem.latest_master_version
@@ -161,6 +161,11 @@ resource "google_container_cluster" "primary" {
     network_policy_config {
       disabled = false
     }
+  }
+  timeouts {
+    create = "60m"
+    update = "60m"
+    delete = "60m"
   }
 }
 
