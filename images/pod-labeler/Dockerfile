@@ -12,20 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM python:2.7-stretch
+FROM python:3.8.2-buster
 
 RUN apt-get update && apt-get upgrade -y && apt-get install --no-install-recommends \
-  vim=2:8.0.0197-4+deb9u1 -y  \
+  vim -y  \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
-RUN pip install requests==2.19.1
+RUN pip install requests==2.23.0
 
-RUN git clone --recursive https://github.com/kubernetes-client/python.git
-WORKDIR /python
-RUN python setup.py install
-
-RUN pip install kubernetes==7.0.0-snapshot
+RUN pip install kubernetes==11.0.0
 
 ENV PYTHON_EGG_CACHE=/tmp
 
