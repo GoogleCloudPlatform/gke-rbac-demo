@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM python:2.7-stretch
+FROM python:3.7-stretch
 
 RUN apt-get update && apt-get upgrade -y && apt-get install --no-install-recommends \
   vim=2:8.0.0197-4+deb9u1 -y  \
