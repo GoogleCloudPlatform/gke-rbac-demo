@@ -33,6 +33,6 @@ provider "template" {
 
 // Pins the version of the "null" provider
 provider "null" {
-  version = "~> 2.1.2"
+  version = "~> 3.2.0"
 }
 
