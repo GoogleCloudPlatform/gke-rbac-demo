@@ -18,7 +18,7 @@ limitations under the License.
 provider "google" {
   project = var.project
   zone    = var.zone
-  version = "~> 2.17.0"
+  version = "~> 4.84.0"
 }
 
 // Pins the version of the "random" provider
